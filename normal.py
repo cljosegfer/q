@@ -27,7 +27,7 @@ def lara_graph(X):
     return adjacencia
 
 # data
-sd = 0.9
+sd = 0.01
 n = 100
 
 mean = (0, 0)
@@ -51,7 +51,7 @@ for i, row in enumerate(gg):
     degree = len(vizinhos)
     opposite = 0
     for vizinho in vizinhos:
-        opposite += np.abs(y[i] - y[vizinho]) / 2
+        opposite += np.exp(-np.linalg.norm(X[i] - X[vizinho])) * np.abs(y[i] - y[vizinho]) / 2
     q = 1 - opposite / degree
     scores.append(q)
 scores = np.array(scores)
