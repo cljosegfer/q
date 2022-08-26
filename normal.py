@@ -10,6 +10,7 @@ import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
+import matplotlib.cm as cm
 
 def lara_graph(X):
     D = distance_matrix(X, X) ** 2
@@ -26,7 +27,7 @@ def lara_graph(X):
     return adjacencia
 
 # data
-sd = 0.5
+sd = 0.9
 n = 100
 
 mean = (0, 0)
@@ -94,3 +95,27 @@ plt.xlim([0, 1])
 plt.title('classe 2, sd = {}'.format(sd))
 plt.xlabel('q')
 plt.ylabel('<x, w>')
+
+plt.figure()
+y_lower = 10
+for c in np.unique(y):
+    cluster = y == c
+    ith_cluster_silhouette_values = scores[cluster]
+    ith_cluster_silhouette_values.sort()
+
+    size_cluster_i = ith_cluster_silhouette_values.shape[0]
+    y_upper = y_lower + size_cluster_i
+
+    color = cm.nipy_spectral(float(c) / len(np.unique(y)))
+    # color = [colors[e] for e in erro[cluster]]
+    plt.fill_betweenx(
+        np.arange(y_lower, y_upper),
+        0,
+        ith_cluster_silhouette_values,
+        facecolor=color,
+        edgecolor=color,
+        alpha=0.7,
+    )
+    y_lower = y_upper + 10
+plt.axvline(x=0.5, color="red", linestyle="--")
+plt.yticks([])
