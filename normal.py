@@ -39,20 +39,24 @@ def q_index(X, y, gg):
     scores = np.array(scores)
     return scores
 
+def normal(sd, n):
+    mean = (0, 0)
+    cov = [[sd, 0], [0, sd]]
+    x1 = np.random.multivariate_normal(mean, cov, size = n)
+    
+    mean = (1, 1)
+    cov = [[sd, 0], [0, sd]]
+    x2 = np.random.multivariate_normal(mean, cov, size = n)
+    
+    X = np.concatenate((x1, x2))
+    y = np.array([-1] * n + [1] * n)
+    
+    return X, y
+
 # data
 sd = 0.5
 n = 100
-
-mean = (0, 0)
-cov = [[sd, 0], [0, sd]]
-x1 = np.random.multivariate_normal(mean, cov, size = n)
-
-mean = (1, 1)
-cov = [[sd, 0], [0, sd]]
-x2 = np.random.multivariate_normal(mean, cov, size = n)
-
-X = np.concatenate((x1, x2))
-y = np.array([-1] * n + [1] * n)
+X, y = normal(sd, n)
 
 # gg
 gg = lara_graph(X)
